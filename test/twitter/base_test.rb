@@ -71,6 +71,15 @@ class BaseTest < Test::Unit::TestCase
         first.text.should == '@jnunemaker cold out today. cold yesterday. even colder today.'
       end
       
+      should "be able to get mentions" do
+        stub_get('/statuses/mentions.json', 'mentions.json')
+        mentions = @twitter.mentions
+        mentions.size.should == 20
+        first = mentions.first
+        first.user.name.should == 'andree huk'
+        first.text.should == '@eng keep me posted please when you resolve that issue'
+      end
+      
       should "correctly hash statuses" do
         stub_get('/statuses/friends_timeline.json', 'friends_timeline.json')
         hashes = @twitter.friends_timeline.map{ |s| s.hash }
